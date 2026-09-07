@@ -25,10 +25,10 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore "RobloxAccountManager/RobloxAccountManager.csproj"
+        run: dotnet restore "Midnight/Midnight.csproj"
 
       - name: Publish
-        run: dotnet publish "RobloxAccountManager/RobloxAccountManager.csproj" -c Release -r win-x64 --self-contained false -o ./publish
+        run: dotnet publish "Midnight/Midnight.csproj" -c Release -r win-x64 --self-contained false -o ./publish
 
       - name: Install Inno Setup
         run: choco install innosetup
@@ -39,15 +39,15 @@ jobs:
         shell: cmd
 
       - name: Zip Portable
-        run: Compress-Archive -Path ./publish/* -DestinationPath ./RobloxAccountManager_Portable.zip
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./Midnight_Portable.zip
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: Build_Assets
           path: |
-            Installer/RobloxAccountManager_Setup.exe
-            RobloxAccountManager_Portable.zip
+            Installer/Midnight_Setup.exe
+            Midnight_Portable.zip
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -55,7 +55,7 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            Installer/RobloxAccountManager_Setup.exe
-            RobloxAccountManager_Portable.zip
+            Installer/Midnight_Setup.exe
+            Midnight_Portable.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
