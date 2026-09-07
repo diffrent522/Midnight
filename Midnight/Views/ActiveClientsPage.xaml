@@ -1,0 +1,79 @@
+﻿<Page x:Class="Midnight.Views.ActiveClientsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:vm="clr-namespace:Midnight.ViewModels"
+      Title="Active Clients">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="24,24,24,16" VerticalAlignment="Center">
+            <ui:Button Icon="{ui:SymbolIcon ArrowLeft24}" Command="{Binding NavigateBackCommand}" Appearance="Secondary" Margin="0,0,15,0"/>
+            <TextBlock Text="Active Sessions" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+            <ui:Button Icon="{ui:SymbolIcon Grid24}" Command="{Binding TileWindowsCommand}" ToolTip="Tile Windows" Margin="0,0,8,0" Appearance="Secondary"/>
+            <ui:Button Icon="{ui:SymbolIcon CopySelect24}" Command="{Binding CascadeWindowsCommand}" ToolTip="Cascade Windows" Margin="0,0,8,0" Appearance="Secondary"/>
+            <ui:Button Icon="{ui:SymbolIcon Subtract24}" Command="{Binding MinimizeAllCommand}" ToolTip="Minimize All" Appearance="Secondary"/>
+        </StackPanel>
+
+        <ui:Card Grid.Row="1" Padding="0" VerticalAlignment="Stretch" VerticalContentAlignment="Top">
+            <ui:DataGrid ItemsSource="{Binding Sessions}" AutoGenerateColumns="False" 
+                         HeadersVisibility="Column"
+                         GridLinesVisibility="Horizontal"
+                         BorderThickness="0"
+                         CanUserAddRows="False"
+                         CanUserDeleteRows="False"
+                         IsReadOnly="True"
+                         SelectionMode="Single"
+                         VerticalAlignment="Top">
+                <ui:DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Account" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding AccountName}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" Width="120"/>
+                    <DataGridTextColumn Header="Map Name" Binding="{Binding PlaceName}" Width="150"/>
+                    <DataGridTextColumn Header="Place ID" Binding="{Binding PlaceId}" Width="100"/>
+                    <DataGridTextColumn Header="Job ID" Binding="{Binding JobId}" Width="150"/>
+                    <DataGridTextColumn Header="Version" Binding="{Binding RobloxVersion}" Width="140"/>
+                    <DataGridTextColumn Header="Process ID" Binding="{Binding ProcessId}" Width="100"/>
+                    <DataGridTextColumn Header="Launch Time" Binding="{Binding LaunchTime}" Width="180"/>
+                    
+                    <DataGridTemplateColumn Header="Mode" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:Card Padding="6,2" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" Margin="5,0">
+                                    <TextBlock Text="{Binding LaunchMode}" HorizontalAlignment="Center" FontSize="12"/>
+                                </ui:Card>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="RAM Usage" Binding="{Binding RamUsageMb, StringFormat={}{0:N0} MB}" Width="100"/>
+                    <DataGridTextColumn Header="Free RAM" Binding="{Binding FreeRamMb, StringFormat={}{0:N0} MB}" Width="100"/>
+
+                    <DataGridTemplateColumn Header="Actions" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:Button Content="Close" Icon="{ui:SymbolIcon Dismiss24}" 
+                                           Command="{Binding DataContext.CloseSessionCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                           CommandParameter="{Binding}" Appearance="Danger" Padding="5,2"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </ui:DataGrid.Columns>
+            </ui:DataGrid>
+        </ui:Card>
+    </Grid>
+</Page>
+

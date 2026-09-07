@@ -1,0 +1,64 @@
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Midnight.Models
+{
+    public partial class RobloxSession : ObservableObject
+    {
+        [ObservableProperty]
+        private int _processId;
+
+        [ObservableProperty]
+        private string _accountName = string.Empty;
+
+        [ObservableProperty]
+        private long _userId;
+
+        [ObservableProperty]
+        private string? _avatarUrl;
+
+        [ObservableProperty]
+        private DateTime _launchTime;
+
+        [ObservableProperty]
+        private long _browserTrackerId;
+
+        [ObservableProperty]
+        private string _status = "Initializing";
+
+        [ObservableProperty]
+        private string _launchMode = "Direct";
+
+        [ObservableProperty]
+        private string? _placeId;
+
+        [ObservableProperty]
+        private string? _jobId;
+
+        [ObservableProperty]
+        private string? _placeName;
+
+        [ObservableProperty]
+        private double _ramUsageMb;
+
+        [ObservableProperty]
+        private double _freeRamMb;
+
+        [ObservableProperty]
+        private string? _serverType;
+
+        [ObservableProperty]
+        private string _robloxVersion = string.Empty;
+
+        public void Kill()
+        {
+            try
+            {
+                var proc = System.Diagnostics.Process.GetProcessById(ProcessId);
+                proc.Kill();
+            }
+            catch { }
+        }
+    }
+}
+

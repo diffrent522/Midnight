@@ -1,0 +1,63 @@
+﻿<ui:ContentDialog x:Class="Midnight.Views.PasteCookieContentDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      Title="Paste Cookie"
+      Width="460"
+      VerticalAlignment="Center"
+      HorizontalAlignment="Center"
+      Background="{DynamicResource ApplicationBackgroundBrush}">
+
+    <Border Background="{DynamicResource ApplicationBackgroundBrush}" CornerRadius="8" Padding="24">
+        <StackPanel>
+            <!-- Info banner -->
+            <Border CornerRadius="6" Background="#1A0078D4" BorderBrush="#330078D4"
+                    BorderThickness="1" Padding="12,10" Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon Symbol="Info24" Foreground="#0078D4" Margin="0,0,10,0" VerticalAlignment="Top"/>
+                    <TextBlock FontSize="12" Foreground="#0078D4" TextWrapping="Wrap">
+                        Paste your <Run FontWeight="SemiBold">.ROBLOSECURITY</Run> cookie below.
+                        You can get it from your browser's DevTools → Application → Cookies → roblox.com.
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- Cookie input — use ui:TextBox so PlaceholderText works -->
+            <TextBlock Text=".ROBLOSECURITY Cookie" FontSize="13"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Margin="0,0,0,6"/>
+            <ui:TextBox x:Name="TxtCookie"
+                        PlaceholderText="_|WARNING:-DO-NOT-SHARE-THIS.--..."
+                        Height="80"
+                        TextWrapping="Wrap"
+                        AcceptsReturn="False"
+                        VerticalScrollBarVisibility="Auto"
+                        FontFamily="Consolas"
+                        FontSize="11"
+                        Margin="0,0,0,16"/>
+
+            <!-- Error message -->
+            <Border x:Name="ErrorBanner" CornerRadius="6" Background="#1AE81123"
+                    BorderBrush="#33E81123" BorderThickness="1" Padding="12,10"
+                    Margin="0,0,0,16" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon Symbol="ErrorCircle24" Foreground="#E81123" Margin="0,0,10,0" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="TxtErrorMessage" FontSize="12" Foreground="#E81123"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Content="Cancel" Click="BtnCancel_Click"
+                           Appearance="Secondary" Width="90" Margin="0,0,10,0"/>
+                <ui:Button Content="Add Account" Click="BtnAdd_Click"
+                           Appearance="Primary" Width="120" Icon="{ui:SymbolIcon Add24}"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</ui:ContentDialog>
+

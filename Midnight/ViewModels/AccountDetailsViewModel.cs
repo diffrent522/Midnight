@@ -1,0 +1,83 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Midnight.Models;
+using System.Windows.Media.Imaging;
+
+namespace Midnight.ViewModels
+{
+    public partial class AccountDetailsViewModel : ObservableObject
+    {
+        private readonly MainViewModel _mainViewModel;
+
+        [ObservableProperty]
+        private RobloxAccount? _selectedAccount;
+
+        [ObservableProperty]
+        private string _aliasEditBuffer = string.Empty;
+
+        [ObservableProperty]
+        private string _descriptionEditBuffer = string.Empty;
+
+        [ObservableProperty]
+        private string _groupEditBuffer = "Default";
+
+        [ObservableProperty]
+        private string _proxyEditBuffer = "";
+
+        [ObservableProperty]
+        private string _username = "";
+
+        [ObservableProperty]
+        private string _userId = "";
+
+        [ObservableProperty]
+        private string _avatarUrl = "";
+
+        [ObservableProperty]
+        private string _expirationText = "Unknown";
+
+        public AccountDetailsViewModel(MainViewModel main)
+        {
+            _mainViewModel = main;
+        }
+
+        public void LoadAccount(RobloxAccount account)
+        {
+            SelectedAccount = account;
+            Username = account.Username;
+            UserId = account.UserId.ToString();
+            AvatarUrl = account.AvatarUrl;
+            AliasEditBuffer = account.Alias;
+            DescriptionEditBuffer = account.Description;
+            GroupEditBuffer = account.Group;
+            ProxyEditBuffer = account.ProxyUrl ?? "";
+            
+            ExpirationText = account.ExpirationDate.HasValue 
+                ? account.ExpirationDate.Value.ToString("g") 
+                : "No expiration info";
+        }
+
+        [RelayCommand]
+        public void SaveAndBack()
+        {
+            if (SelectedAccount != null)
+            {
+                SelectedAccount.Alias = AliasEditBuffer;
+                SelectedAccount.Description = DescriptionEditBuffer;
+                SelectedAccount.Group = GroupEditBuffer;
+                SelectedAccount.ProxyUrl = ProxyEditBuffer;
+                _mainViewModel.SaveAccounts();
+                
+                Services.LogService.Log($"Updated account details for {SelectedAccount.Username}", Services.LogLevel.Info, "Account");
+            }
+            _mainViewModel.NavigateAccounts();
+        }
+
+        [RelayCommand]
+        public void NavigateBack()
+        {
+            _mainViewModel.NavigateAccounts();
+        }
+    }
+}
+

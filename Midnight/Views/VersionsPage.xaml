@@ -1,0 +1,200 @@
+﻿<Page x:Class="Midnight.Views.VersionsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Midnight.ViewModels"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="800">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+            <ui:Button Icon="{ui:SymbolIcon ArrowLeft24}" Command="{Binding NavigateBackCommand}" Appearance="Secondary" Margin="0,0,15,0"/>
+            <TextBlock Text="Version Manager" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+        </StackPanel>
+
+        <ui:Card Grid.Row="1" VerticalAlignment="Top" Padding="20" Margin="0,0,0,15">
+            <StackPanel Grid.IsSharedSizeScope="True">
+                
+                <Grid Margin="0,0,0,15">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Installed Version:" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding InstalledVersion}" Foreground="{DynamicResource SystemAccentColorBrush}" FontWeight="Bold" VerticalAlignment="Center" FontSize="16"/>
+                </Grid>
+
+                <Rectangle Height="1" Fill="{DynamicResource CardStrokeColorDefaultBrush}" Margin="0,0,0,15"/>
+
+                <Grid Margin="0,0,0,10">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Latest (Live):" Foreground="#28a745" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentVersion}" VerticalAlignment="Center"/>
+                        <Border Background="#1C28a745" CornerRadius="4" Padding="6,2" Margin="8,0,0,0"
+                                Visibility="{Binding IsCurrentDownloaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Checkmark24" Foreground="#28a745" FontSize="12"/>
+                                <TextBlock Text="Downloaded" Foreground="#28a745" FontSize="11" Margin="4,0,0,0" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <ui:Button Grid.Column="3" Content="Download" Command="{Binding OpenDownloadCommand}" CommandParameter="Current" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Secondary"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,10">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Future (Next):" Foreground="#17a2b8" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding FutureVersion}" VerticalAlignment="Center"/>
+                        <Border Background="#1C17a2b8" CornerRadius="4" Padding="6,2" Margin="8,0,0,0"
+                                Visibility="{Binding IsFutureDownloaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Checkmark24" Foreground="#17a2b8" FontSize="12"/>
+                                <TextBlock Text="Downloaded" Foreground="#17a2b8" FontSize="11" Margin="4,0,0,0" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <ui:Button Grid.Column="3" Content="Download" Command="{Binding OpenDownloadCommand}" CommandParameter="Future" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Secondary"/>
+                </Grid>
+
+                <Grid Margin="0,0,0,10">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Past (Downgrade):" Foreground="#d63384" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding PastVersion}" VerticalAlignment="Center"/>
+                        <Border Background="#1Cd63384" CornerRadius="4" Padding="6,2" Margin="8,0,0,0"
+                                Visibility="{Binding IsPastDownloaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Checkmark24" Foreground="#d63384" FontSize="12"/>
+                                <TextBlock Text="Downloaded" Foreground="#d63384" FontSize="11" Margin="4,0,0,0" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <ui:Button Grid.Column="3" Content="Download" Command="{Binding OpenDownloadCommand}" CommandParameter="Past" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Secondary"/>
+                </Grid>
+
+                <Rectangle Height="1" Fill="{DynamicResource CardStrokeColorDefaultBrush}" Margin="0,5,0,15"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Custom Version:" Foreground="#fd7e14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Grid Grid.Column="1" Margin="0,0,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:TextBox Text="{Binding CustomVersion, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter custom version or click Search (e.g. version-xxxxxxxxxxxxxxxx)" VerticalAlignment="Center"/>
+                        <Border Grid.Column="1" Background="#1Cfd7e14" CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center"
+                                Visibility="{Binding IsCustomDownloaded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="Checkmark24" Foreground="#fd7e14" FontSize="12"/>
+                                <TextBlock Text="Downloaded" Foreground="#fd7e14" FontSize="11" Margin="4,0,0,0" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <ui:Button Grid.Column="2" Command="{Binding SearchCustomVersionCommand}" Icon="{ui:SymbolIcon Search24}" Content="Search" Appearance="Secondary" Margin="8,0,0,0"/>
+                    </Grid>
+                    <ui:Button Grid.Column="3" Content="Download" Command="{Binding OpenDownloadCommand}" CommandParameter="Custom" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Primary"/>
+                </Grid>
+                
+            </StackPanel>
+        </ui:Card>
+
+        <ui:Card Grid.Row="2" Padding="15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <ui:SymbolIcon Symbol="FolderOpen24" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,8,0"/>
+                    <TextBlock Text="Downloaded Versions" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <Border Background="{DynamicResource SystemAccentColorBrush}" CornerRadius="10" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding DownloadedVersions.Count}" Foreground="White" FontSize="11" FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+
+                <Border Grid.Row="1" CornerRadius="6">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                        <ItemsControl ItemsSource="{Binding DownloadedVersions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="10,8" Margin="0,0,0,2" CornerRadius="4"
+                                            Background="{DynamicResource ControlFillColorDefaultBrush}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <ui:SymbolIcon Symbol="Checkmark24" Foreground="#28a745" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding}" VerticalAlignment="Center" FontFamily="Consolas" FontSize="13"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <TextBlock Grid.Row="1" Text="No versions downloaded yet." 
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" FontStyle="Italic">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DownloadedVersions.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </ui:Card>
+
+        <Grid Grid.Row="3" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"/>
+            
+            <ui:Button Grid.Column="1" Content="Refresh" Command="{Binding RefreshCommand}" Icon="{ui:SymbolIcon ArrowSync24}" Width="100"/>
+        </Grid>
+    </Grid>
+</Page>
+

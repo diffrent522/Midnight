@@ -1,0 +1,77 @@
+﻿<ui:FluentWindow x:Class="Midnight.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Midnight.ViewModels"
+        xmlns:v="clr-namespace:Midnight.Views"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:ctrl="clr-namespace:Midnight.Controls"
+        mc:Ignorable="d"
+        Title="Midnight" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        WindowCornerPreference="Round">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ctrl:StarField Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="-1"/>
+        
+        <ui:TitleBar x:Name="ApplicationTitleBar" Title="Midnight" Grid.Row="0"/>
+
+        <!-- Update Banner -->
+        <Border Grid.Row="1" VerticalAlignment="Top" Background="{DynamicResource PaletteGreenBrush}" 
+                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Panel.ZIndex="1000" Margin="10,0,10,0" CornerRadius="4" Height="40">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                    <ui:SymbolIcon Symbol="ArrowDownload24" Foreground="White" Margin="0,0,10,0"/>
+                    <TextBlock Foreground="White" VerticalAlignment="Center">
+                        <Run Text="New update available:"/>
+                        <Run Text="{Binding UpdateVersion}" FontWeight="Bold"/>
+                    </TextBlock>
+                </StackPanel>
+                <ui:Button Grid.Column="1" Content="Update Now" Command="{Binding PerformUpdateCommand}" Margin="5" Appearance="Primary" Foreground="Black" Background="White"/>
+            </Grid>
+        </Border>
+
+        <ui:NavigationView Grid.Row="1" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" IsPaneToggleVisible="True"
+                           Background="{DynamicResource ApplicationBackgroundBrush}"
+                           x:Name="RootNavigation">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Accounts" Icon="{ui:SymbolIcon Person24}" TargetPageType="{x:Type v:AccountsPage}" />
+                <ui:NavigationViewItem Content="Launch Selected" Icon="{ui:SymbolIcon Play24}" Command="{Binding LaunchSelectedCommand}" />
+                <ui:NavigationViewItem Content="Add Friend" Icon="{ui:SymbolIcon PersonAdd24}" TargetPageType="{x:Type v:AddFriendPage}" />
+                <ui:NavigationViewItem Content="Auto Rejoin" Icon="{ui:SymbolIcon ArrowRepeatAll24}" TargetPageType="{x:Type v:AutoJoinPage}" />
+                <ui:NavigationViewItem Content="Browser" Icon="{ui:SymbolIcon Globe24}" TargetPageType="{x:Type v:BrowserPage}" />
+                <ui:NavigationViewItem Content="Active Clients" Icon="{ui:SymbolIcon Desktop24}" TargetPageType="{x:Type v:ActiveClientsPage}" />
+                <ui:NavigationViewItem Content="Exploits" Icon="{ui:SymbolIcon Games24}" TargetPageType="{x:Type v:ExploitsPage}" />
+                <ui:NavigationViewItem Content="Fast Flags" Icon="{ui:SymbolIcon Flag24}" TargetPageType="{x:Type v:FastFlagsPage}" />
+                <ui:NavigationViewItem Content="Versions" Icon="{ui:SymbolIcon ArrowDownload24}" TargetPageType="{x:Type v:VersionsPage}" />
+            </ui:NavigationView.MenuItems>
+
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Logs" Icon="{ui:SymbolIcon DocumentOnePage24}" TargetPageType="{x:Type v:LogsPage}" />
+                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" TargetPageType="{x:Type v:SettingsPage}" />
+                <ui:NavigationViewItem Content="About" Icon="{ui:SymbolIcon Info24}" TargetPageType="{x:Type v:AboutPage}" />
+            </ui:NavigationView.FooterMenuItems>
+
+            <ui:NavigationView.ContentOverlay>
+                <Grid>
+                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
+                </Grid>
+            </ui:NavigationView.ContentOverlay>
+        </ui:NavigationView>
+
+        <ui:ContentDialogHost x:Name="RootContentDialog" Grid.Row="0" Grid.RowSpan="2"/>
+    </Grid>
+</ui:FluentWindow>
+

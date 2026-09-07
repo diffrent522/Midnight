@@ -1,0 +1,92 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Midnight.Models;
+using Midnight.Services;
+using Midnight.Views;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+
+namespace Midnight.ViewModels
+{
+    public partial class BrowserViewModel : ObservableObject
+    {
+        private readonly SecurityService _securityService;
+
+        [ObservableProperty]
+        private ObservableCollection<BrowserAccountItem> _accountItems = new();
+
+        private readonly MainViewModel _mainViewModel;
+
+        public BrowserViewModel(MainViewModel main, ObservableCollection<RobloxAccount> accounts, SecurityService securityService)
+        {
+            _mainViewModel = main;
+            _securityService = securityService;
+
+
+            foreach (var acc in accounts)
+            {
+                AccountItems.Add(new BrowserAccountItem(acc));
+            }
+
+
+            accounts.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (RobloxAccount acc in e.NewItems)
+                        AccountItems.Add(new BrowserAccountItem(acc));
+                }
+                if (e.OldItems != null)
+                {
+                    foreach (RobloxAccount acc in e.OldItems)
+                    {
+                        var item = AccountItems.FirstOrDefault(i => i.Account.UserId == acc.UserId);
+                        if (item != null) AccountItems.Remove(item);
+                    }
+                }
+            };
+        }
+
+        [RelayCommand]
+        public void OpenSelected()
+        {
+            var selected = AccountItems.Where(x => x.IsSelected).ToList();
+
+            if (!selected.Any())
+            {
+                MessageBox.Show("Please select at least one account to open.", "Browser", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            foreach (var item in selected)
+            {
+                LogService.Log($"Opening browser for account: {item.Account.Username}", LogLevel.Info, "Browser");
+                var win = new BrowserWindow(item.Account, _securityService);
+                win.Show();
+            }
+        }
+
+
+        [RelayCommand]
+        public void NavigateBack()
+        {
+            _mainViewModel.NavigateAccounts();
+        }
+    }
+
+    public partial class BrowserAccountItem : ObservableObject
+    {
+        public RobloxAccount Account { get; }
+
+        [ObservableProperty]
+        private bool _isSelected;
+
+        public BrowserAccountItem(RobloxAccount account)
+        {
+            Account = account;
+            IsSelected = false; 
+        }
+    }
+}
+

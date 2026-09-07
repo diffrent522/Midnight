@@ -1,0 +1,77 @@
+﻿<ui:ContentDialog x:Class="Midnight.Views.AddAccountMethodDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      Title="Add Account"
+      Width="420"
+      VerticalAlignment="Center"
+      HorizontalAlignment="Center"
+      Background="{DynamicResource ApplicationBackgroundBrush}">
+
+    <Border Background="{DynamicResource ApplicationBackgroundBrush}" CornerRadius="8" Padding="24">
+        <StackPanel>
+            <TextBlock Text="How would you like to add the account?"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,20"/>
+
+            <!-- Browser Login -->
+            <Border x:Name="CardBrowser" CornerRadius="8" BorderThickness="1"
+                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    Margin="0,0,0,10" Cursor="Hand" MouseLeftButtonUp="CardBrowser_Click"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:SymbolIcon Symbol="Globe24" FontSize="22" VerticalAlignment="Center" Margin="0,0,14,0"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Browser Login" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="Log in using the Roblox website. Works with 2FA."
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Paste Cookie -->
+            <Border x:Name="CardCookie" CornerRadius="8" BorderThickness="1"
+                    BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    Margin="0,0,0,10" Cursor="Hand" MouseLeftButtonUp="CardCookie_Click"
+                    Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:SymbolIcon Symbol="ClipboardPaste24" FontSize="22" VerticalAlignment="Center" Margin="0,0,14,0"
+                                   Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Paste Cookie" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="Paste a .ROBLOSECURITY cookie directly."
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Username & Password -->
+
+            <!-- Cancel -->
+            <ui:Button Content="Cancel" Click="BtnCancel_Click"
+                       Appearance="Secondary" HorizontalAlignment="Right"
+                       Margin="0,8,0,0" Width="90"/>
+        </StackPanel>
+    </Border>
+</ui:ContentDialog>
+
