@@ -90,6 +90,13 @@ namespace Midnight.ViewModels
         }
 
         [RelayCommand]
+        public void OpenDiscord2()
+        {
+            // Midnight server.
+            OpenUrl("https://discord.gg/4vaNfwPTra");
+        }
+
+        [RelayCommand]
         public void OpenDiscord()
         {
             // Weao's Discord

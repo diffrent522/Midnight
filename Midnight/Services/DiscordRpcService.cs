@@ -23,7 +23,7 @@ namespace Midnight.Services
 
         private static readonly Button[] _standardButtons = new[]
         {
-            new Button { Label = "Join Discord", Url = "https://discord.gg/yourserver" },
+            new Button { Label = "Join Discord", Url = "https://discord.gg/Kc4qYmMkax" },
             new Button { Label = "Download", Url = "https://github.com/diffrent522/Account-Manager" }
         };
 
